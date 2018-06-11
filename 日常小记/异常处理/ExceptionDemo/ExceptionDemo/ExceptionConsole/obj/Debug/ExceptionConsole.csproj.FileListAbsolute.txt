@@ -1,0 +1,6 @@
+G:\Fuhai\MyDemo\ExceptionDemo\ExceptionConsole\bin\Debug\ExceptionConsole.exe.config
+G:\Fuhai\MyDemo\ExceptionDemo\ExceptionConsole\bin\Debug\ExceptionConsole.exe
+G:\Fuhai\MyDemo\ExceptionDemo\ExceptionConsole\bin\Debug\ExceptionConsole.pdb
+G:\Fuhai\MyDemo\ExceptionDemo\ExceptionConsole\obj\Debug\ExceptionConsole.csprojResolveAssemblyReference.cache
+G:\Fuhai\MyDemo\ExceptionDemo\ExceptionConsole\obj\Debug\ExceptionConsole.exe
+G:\Fuhai\MyDemo\ExceptionDemo\ExceptionConsole\obj\Debug\ExceptionConsole.pdb

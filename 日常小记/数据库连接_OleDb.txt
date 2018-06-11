@@ -1,0 +1,31 @@
+       
+using System.Data.OleDb;
+using System.Data.SqlClient;
+
+        OleDbCommand oleDbCommand;
+        OleDbConnection oleDbConnection;
+        OleDbDataAdapter oleDbDataAdapter;
+        DataSet dataSet;
+        OleDbCommandBuilder oleDbCommandBuilder;
+   
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string strConn = "@Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=online_store;Data Source=.";
+            oleDbConnection = new OleDbConnection(strConn);
+            oleDbConnection.Open();
+            dataSet = new DataSet();
+            oleDbCommand = new OleDbCommand();
+            oleDbDataAdapter = new OleDbDataAdapter(oleDbCommand);
+            oleDbCommandBuilder = new OleDbCommandBuilder(oleDbDataAdapter);
+            oleDbCommand.Connection = oleDbConnection;
+            oleDbCommand.CommandText = "select * from book where bookid='" + textBox1.Text + "'";
+            oleDbDataAdapter.Fill(dataSet, "book2");
+            listBox1.DataSource = dataSet.Tables["book2"];
+            string Name = ""; 
+            for (int i = 0; i < dataSet.Tables["book2"].Rows.Count; i++) 
+            { 
+                Name = dataSet.Tables["book2"].Rows[i][2].ToString();
+                listBox1.Items.Insert(i, Name); 
+            } 
+           
+        }

@@ -1,0 +1,41 @@
+1、 设置时间控件dateEdit。
+此控件默认的情况下，显示的只有日期，没有时间。
+
+  1） 控件下拉显示时钟
+      dateEditHisTime.Properties.VistaDisplayMode = DevExpress.Utils.DefaultBoolean.True;
+      dateEditHisTime.Properties.VistaEditTime = DevExpress.Utils.DefaultBoolean.True;
+
+                dateEditHisTime.Properties.DisplayFormat.FormatString = "yyyy-MM-dd HH:mm";
+                dateEditHisTime.Properties.DisplayFormat.FormatString = "yyyy-MM-dd HH:mm";
+                dateEditHisTime.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+                dateEditHisTime.Properties.EditFormat.FormatString = "yyyy-MM-dd HH:mm";
+                dateEditHisTime.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+                dateEditHisTime.Properties.Mask.EditMask = "yyyy-MM-dd HH:mm";
+                dateEditHisTime.Properties.VistaTimeProperties.DisplayFormat.FormatString = "HH:00";
+                dateEditHisTime.Properties.VistaTimeProperties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+                dateEditHisTime.Properties.VistaTimeProperties.EditFormat.FormatString = "HH:00";
+                dateEditHisTime.Properties.VistaTimeProperties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+                dateEditHisTime.Properties.VistaTimeProperties.Mask.EditMask = "HH:00";
+
+
+
+
+
+
+
+
+
+
+
+2、gridcontrol  之   gridview
+
+gridViewData.OptionsView.ColumnAutoWidth = false;  //列数过多时根据列中内容展示，会出现滚动条    true则无滚动条，所有列划分gridview宽度
+ gridViewData.PopulateColumns(); //所有列分布在gridview宽度内 无滚动条
+
+
+gridViewAlarm.OptionsPrint.PrintHeader = false; //导出内容无列名
+
+ gridViewData.Columns[0].Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;//固定某列显示
+
+http://localhost:5233/WCFService.svc
+http://www.ttbems.com/TTBEMS2011/WCFService.svc

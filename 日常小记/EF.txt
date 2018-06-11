@@ -1,0 +1,82 @@
+EF框架划分的模式：
+DataBase First
+Model First
+CodeFirst
+　　DataBase First传统的表驱动方式创建EDM，然后通过EDM生成模型和数据层代码。除生成实体模型和自跟踪实现模型，还支持生成轻型DbContext。
+　　Model First先创建EDM模型，再生成DDL数据库脚本和模型和数据层代码。除生成实体模型和自跟踪实现模型，支持生成轻型DbContext。
+　　Code First手动创建POCO模型，数据层DbContext及映射关系，通过Database.SetInitializer生成数据库，这种方式较灵活，但是代码工作较多。
+
+http://www.cnblogs.com/eric-qin/p/5216999.html
+http://www.cnblogs.com/yangyancheng/archive/2011/05/17/2048794.html
+http://kb.cnblogs.com/page/170116/
+http://www.cnblogs.com/rdst/archive/2012/08/12/2634354.html
+http://www.2cto.com/database/201504/394912.html
+http://www.cnblogs.com/haogj/archive/2011/05/06/2038965.html
+
+
+通过参考网上学习资料动手练习EFdemo，对EF框架有了更多的了解。edm模型中实体对应数据库表，若两个实体有关联，说明数据库表中设置了外键。可以根据模型生成数据库，也可以根据数据库更新模型。
+EF框架会根据建好的模型自动生成继承Objectcontext的核心类，即上下文，应用时首先要创建上下文实例，用于对象服务和实体客户端之间的交互。
+查询数据时直接由上下文实例读取实体数据；
+新增时，先构造实体实例DKInfo dk = new DKInfo();将实体对象添加到实体集合中 DKDB.DKInfo.AddObject(dk);最后EF将数据保存到数据库 DKDB.SaveChanges()。
+修改时，直接修改实体对象的属性修改对应字段，EF自动将所有修改同步到数据库中，不需要写繁琐的Update语句。将实体对象添加到实体集合中 DKDB.DKInfo.Attach(dk); DKDB.ObjectStateManager.ChangeObjectState(dk, EntityState.Modified); 将状态设置为Modified，若删除数据则将状态设置为Deleted，最后都需要保存DKDB.SaveChanges()。
+
+
+
+
+
+T4模板
+http://www.cnblogs.com/lzrabbit/archive/2012/07/15/2591085.html
+
+
+ORM全称：(Object-Relation  Mapping)即对象-关系映射。ORM是将关系数据库中的业务数据用对象的形式表现出来，并通过面向对象的方式将这些对象组织起来，实现系统业务逻辑的过程。O对应程序中的类Customer，就是对象，我们知道R含义为Relation，对应数据当中的关系表；M表示程序中对象和数据库中关系表的映射关系。Mapping实际上是一个XML文件。
+业务实体，在数据库中表现为关系数据，而在内存中表现为对象。应用程序处理对象很容易，但是很难处理关系数据。ORM做到了关系数据和对象数据之间的映射，ORM可以通过映射关系自动产生SQL语句，ORM在业务逻辑层和数据层之间充当桥梁。
+
+
+EDM（Entity  Data   Model）：实体数据模型
+
+
+
+C# List<T>的用法小结
+http://www.jb51.net/article/45996.htm
+
+
+
+错误：其他信息: 支持“BlockDBContext”上下文的模型已在数据库创建后发生更改。请考虑使用 Code First 迁移更新数据库(http://go.microsoft.com/fwlink/?LinkId=238269)。
+
+解决方法：1、删除[__MigrationHistory]这张表
+2、修改数据库 3、重新创建数据库///////////// 程序包管理器控制台 迁移数据库
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

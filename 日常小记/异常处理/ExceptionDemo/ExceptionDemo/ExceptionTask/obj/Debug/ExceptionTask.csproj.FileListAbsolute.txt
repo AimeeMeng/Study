@@ -1,0 +1,9 @@
+G:\Fuhai\MyDemo\ExceptionDemo\ExceptionTask\bin\Debug\ExceptionTask.exe.config
+G:\Fuhai\MyDemo\ExceptionDemo\ExceptionTask\bin\Debug\ExceptionTask.exe
+G:\Fuhai\MyDemo\ExceptionDemo\ExceptionTask\bin\Debug\ExceptionTask.pdb
+G:\Fuhai\MyDemo\ExceptionDemo\ExceptionTask\obj\Debug\ExceptionTask.csprojResolveAssemblyReference.cache
+G:\Fuhai\MyDemo\ExceptionDemo\ExceptionTask\obj\Debug\ExceptionTask.exe
+G:\Fuhai\MyDemo\ExceptionDemo\ExceptionTask\obj\Debug\ExceptionTask.pdb
+E:\日常学习资料积累\异常处理\ExceptionDemo\ExceptionDemo\ExceptionTask\bin\Debug\ExceptionTask.exe.config
+E:\日常学习资料积累\异常处理\ExceptionDemo\ExceptionDemo\ExceptionTask\obj\Debug\ExceptionTask.exe
+E:\日常学习资料积累\异常处理\ExceptionDemo\ExceptionDemo\ExceptionTask\obj\Debug\ExceptionTask.pdb

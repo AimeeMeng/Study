@@ -1,0 +1,90 @@
+
+注意内容部分的列数要和表头一致
+
+不要多次初始化，设置属性时在一个初始化方法中设置
+
+有时提示找不到datatable方法
+原因
+window.onload必须等到页面内包括图片的所有元素加载完毕后才能执行。 
+$(document).ready()是DOM结构绘制完毕后就执行，不必等到加载完毕。
+
+
+数据源1 DOM来源 ： 在网页上将表格内容加载完全，再初始化
+
+$(document).ready(function() {
+    $('#example').dataTable();
+//若有多个datatable，可以使用class控制 $('.example').datatable();
+} );
+
+数据源2：数组
+function demoTable() {
+    $('#demo').html('<table cellpadding="0" cellspacing="0" border="0" class="display" id="example0"></table>');
+    $('#example0').dataTable({
+        "aaData": data, //数组资源,不需要页面加载好表头（aa 说明这是一个数组的数组，外层的数组表示表格的行，每一行同样是一个数组。注意每一行数据要和列数一致）
+        "aoColumns": [
+        //aoColumns 参数用来定义表格的列，这是一个数组，其中的每一个对象用来定义一列。对于每一个列对象：
+        //sTitle 定义列的标题,sClass 定义列的样式
+        //fnRender 函数用来渲染列，这个函数将会传递一个参数对象，这个参数对象的 iDataColumn 属性表示当前的列索引，aData 表示当前的行数组。函数返回的结果将被填充到单元格中。
+            {"sTitle": "Engine" },
+            { "sTitle": "Browser" },
+            { "sTitle": "Platform" },
+            { "sTitle": "Version", "sClass": "center" },
+            {
+                "sTitle": "Grade",
+                "sClass": "center",
+                "fnRender": function (obj) {
+                    var sReturn = obj.aData[obj.iDataColumn];
+                    if (sReturn == "A") {
+                        sReturn = "<b>A</b>";
+                    }
+                    return sReturn;
+                }
+            }
+        ]
+    });
+}
+
+数据源3：ajax
+
+function ajaxTable() {
+    //需要写好表头
+    //在初始化参数对象中，通过 sAjaxSource 的属性传递请求的地址，bProcessing 表示是否需要显示一个工作中的提示。
+    //在 JSON 方式返回的数据中，需要一个名为 aaData 的属性来提供实际的数据。
+    $('#Table1').dataTable({
+        "bProcessing": false,
+        //                        "bServerSide": true, //是否启动服务器端数据导入  
+        "sAjaxSource": '../Handler1.ashx'
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,136 @@
+declare @xmlDoc xml;
+
+set @xmlDoc='<book id="0001">
+
+<title>C Program</title>
+
+<author>David</author>
+
+<price>21</price>
+
+</book>'
+
+select @xmlDoc.query('/book/title')
+
+数据库表 id xcol，id为自增，xcol为xml类型字段
+
+insert into [TTBEMS_IBPTest].[dbo].[xmltest]([xcol])
+values('<book id="0001">
+<title>title001</title>
+<title>title002</title>
+<author>David</author>
+<price>101</price>
+<price>102</price></book>
+<book id="0002">
+<title>title2001</title>
+<title>title2002</title>
+<author>David</author>
+<price>201</price>
+<price>202</price>
+</book>')
+1、查询book下面的price节点
+select xcol.query('/book/price')  FROM [TTBEMS_IBPTest].[dbo].[xmltest]
+结果：<price>101</price><price>102</price><price>201</price><price>202</price>
+
+2、查询book下面的第一个price节点
+select xcol.query('/book/price[1]')  FROM [TTBEMS_IBPTest].[dbo].[xmltest] 
+结果：<price>101</price><price>201</price>
+
+第二个price节点
+select xcol.query('/book/price[2]')  FROM [TTBEMS_IBPTest].[dbo].[xmltest] 
+结果：<price>102</price><price>202</price>
+
+3、查询第一个book下面的第二个price节点
+select xcol.query('/book[1]/price[2]')  FROM [TTBEMS_IBPTest].[dbo].[xmltest]
+结果：<price>102</price>
+
+4、查询book下title的值
+select xcol.value('(/book/title)[1]','varchar(50)') FROM [TTBEMS_IBPTest].[dbo].[xmltest] 
+结果：title001
+
+select xcol.value('(/book/title)[2]','varchar(50)') FROM [TTBEMS_IBPTest].[dbo].[xmltest] 
+结果：title002
+
+select xcol.value('(/book[2]/title[2])','varchar(50)') FROM [TTBEMS_IBPTest].[dbo].[xmltest]
+结果：title2002
+
+5、查询book 的id属性值
+select xcol.value('(/book/@id)[2]', 'nvarchar(max)') FROM [TTBEMS_IBPTest].[dbo].[xmltest]
+结果：0002
+
+select xcol.value('(/book[1]/@id)', 'nvarchar(max)') FROM [TTBEMS_IBPTest].[dbo].[xmltest]
+结果：0001
+
+select xcol.value('(/book[1]/@id[2])', 'nvarchar(max)') FROM [TTBEMS_IBPTest].[dbo].[xmltest]
+结果：null
+
+6、更新字段
+UPDATE [TTBEMS_IBPTest].[dbo].[xmltest]
+set [xcol].modify('replace value of (book/title/text())[2] with "title2"')
+where id='1'
+
+
+
+
+
+
+
+3.4 查询表中每条记录的xml字段的item节点值，全部列出来
+SELECT t2.c1.value('.','varchar(20)') as items
+from xmlTest
+cross apply _x.nodes('root/item') as t2(c1)
+
+
+3.5 查询表中id=1记录的xml的所有item字段的attr2属性值
+SELECT t2.c1.value() as attr2
+from xmlTest
+cross apply _x.nodes('root/item') as t2(c1)
+where id='1'
+
+ 
+
+3.6 查询id为1的所有节点中attr1属性为a1的第一个匹配节点的attr2属性值
+
+select _x.value('(root/item[@attr1="a1"]/@attr2)[1]','varchar(50)')
+from xmlTest where id='1'
+
+ 
+
+3.7 多表查询
+
+例如：存在另外1个table：t2，其字段xmlid关联表xmlTest，而attr1关联xmlTest的_x字段中的attr1属性值。
+
+查询表xmlTest中id=‘1'记录中_x字段内item节点中attr1为表t2中attr1字段值时，item节点中attr2的属性值
+
+select xmlTest._x.value('(root/item[@attr1=sql:column("t2.attr1")]/@attr2)[1]','varchar(50)') as attr2,t2.attr1
+from xmlTest join t2 on t2.xmlid=xmlTest.id
+where xmlTest.id='1'
+
+
+4.修改数据
+4.1 修改表中id=1记录的第一个item节点值
+UPDATE xmlTest
+set _x.modify('replace value of (root/item/text())[1] with "xxxxx"')
+where id='1'
+
+select _x.query('root/item[1]') as item1
+from xmlTest
+
+4.2 修改表中id=2记录的第二个item节点的attr2属性值
+UPDATE xmlTest
+set _x.modify('replace value of (] with "2222b"')
+where id='2'
+
+select _x.query('root/item[2]') as item1
+from xmlTest
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,173 @@
+
+ var myChart = echarts.init(document.getElementById('chart'));
+var option = {
+                title: {
+                    text: title
+                },
+                tooltip: {
+                    trigger: 'item',
+                    triggerOn: 'mousemove'
+                },
+                series: [
+                            {
+                                type: 'sankey',
+                                layout: 'force',
+                                data: ChartData.SankeyData,
+                                links: ChartData.SankeyLink,
+                                 color: ['#036EB8', '#601986', '#B5B5B6', '#0A4890', '#C30D23', '#F39800', "#02aacc", "#9c8848", "#cf10af"],
+                   
+                                itemStyle: {
+                                    normal: {
+                                        borderWidth: 1,
+                                        borderColor: '#fff'
+                                    }
+                                },
+                                lineStyle: {
+                                    normal: {
+                                       // curveness: 0.5
+                            color: 'source',
+                            curveness: 0.8,
+                            opacity: 0.5,
+                            shadowColor: '#FF0000'
+                                    }
+                                }
+                            }
+                        ]
+                        };
+            myChart.setOption(option);
+
+
+
+
+links = [{
+        "source": "源结点",
+        "target": "目标结点",
+        "value": 356,
+            "lineStyle": {
+                "normal": {
+                    color:"#a22"
+                }
+            }
+    }]
+nodes =[{
+        "name": "源结点",
+            "itemStyle": {
+                "normal": {
+                    "color": "#a22"
+                }
+            }
+}]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ case "GetSankeydata":
+                    #region
+                    try
+                    {
+                        string PID = context.Request.Form["PID"];
+                        DataTable dt = PageWCF.GetDRHisBuildEventsInfo(PID);
+                        SankeyModel SankeyModel = new SankeyModel();
+                        var q = from rv in dt.AsEnumerable()
+                                group rv by new { g1 = rv[8] } into gv
+                                select new { BuildParamValue = gv.First()[7], Value = gv.Sum(n => n.Field<decimal>("account_plan_quan")) };
+                        int ct = 0;
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+                            ct = dt.Rows[i]["F_BuildFunc"].ToString() == "A" ? ct + 1 : ct;
+                            if (ct > 15)
+                            {
+                                double count = 0;
+                                for (int j = i; j < dt.Rows.Count; j++)
+                                {
+                                    count = count + Double.Parse(dt.Rows[j]["account_plan_quan"].ToString());
+                                }
+                                SankeyData SankeyData0 = new SankeyData();
+                                SankeyData0.name = "其他";
+                                SankeyData0.value = count.ToString();
+                                SankeyModel.SankeyData.Add(SankeyData0);
+
+                                SankeyLink SankeyLink0 = new SankeyLink();
+                                SankeyLink0.source = dt.Rows[i]["F_BuildParamValue"].ToString();
+                                SankeyLink0.target = "其他";
+                                SankeyLink0.value = count.ToString();
+                                SankeyModel.SankeyLink.Add(SankeyLink0);
+                                break;
+                            }
+                            SankeyData SankeyData = new SankeyData();
+                            SankeyData.name = dt.Rows[i]["F_BuildName"].ToString();
+                            SankeyData.value = dt.Rows[i]["account_plan_quan"].ToString();
+                            SankeyModel.SankeyData.Add(SankeyData);
+
+                            SankeyLink SankeyLink = new SankeyLink();
+                            SankeyLink.source = dt.Rows[i]["F_BuildParamValue"].ToString();
+                            SankeyLink.target = dt.Rows[i]["F_BuildName"].ToString();
+                            SankeyLink.value = dt.Rows[i]["account_plan_quan"].ToString();
+                            SankeyModel.SankeyLink.Add(SankeyLink);
+                        }
+
+                        for (int i = 0; i < q.ToList().Count; i++)
+                        {
+                            SankeyData SankeyData = new SankeyData();
+                            SankeyData.name = q.ToList()[i].BuildParamValue.ToString();
+                            SankeyData.value = q.ToList()[i].Value.ToString();
+                            SankeyModel.SankeyData.Add(SankeyData);
+
+                            SankeyLink SankeyLink = new SankeyLink();
+                            SankeyLink.source = "申请削减总量";
+                            SankeyLink.target = q.ToList()[i].BuildParamValue.ToString();
+                            SankeyLink.value = q.ToList()[i].Value.ToString();
+                            SankeyModel.SankeyLink.Add(SankeyLink);
+                        }
+                        SankeyData SData = new SankeyData();
+                        SData.name = "申请削减总量";
+                        SData.value = q.Sum(n => n.Value).ToString();
+                        SankeyModel.SankeyData.Add(SData);
+                        string userJsonString = JsonConvert.SerializeObject(SankeyModel);
+                        context.Response.Write(userJsonString);
+                    }
+                    catch { }
+                    break;
+                     #endregion
+
+
+
+ public class SankeyModel
+    {
+        public List<SankeyData> SankeyData;
+        public List<SankeyLink> SankeyLink;
+        public SankeyModel()
+        {
+            SankeyData = new List<SankeyData>();
+            SankeyLink = new List<SankeyLink>();
+        }
+    }
+
+    public class SankeyData
+    {
+        public string name;
+        public string value;
+    }
+
+    public class SankeyLink
+    {
+        public string source;
+        public string target;
+        public string value;
+    }
