@@ -1,0 +1,13 @@
+D:\GitHub\Study\数据导出\WinFormExport\WinFormExport\bin\Debug\WinFormExport.exe.config
+D:\GitHub\Study\数据导出\WinFormExport\WinFormExport\obj\Debug\WinFormExport.csprojResolveAssemblyReference.cache
+D:\GitHub\Study\数据导出\WinFormExport\WinFormExport\obj\Debug\WinFormExport.Form1.resources
+D:\GitHub\Study\数据导出\WinFormExport\WinFormExport\obj\Debug\WinFormExport.Properties.Resources.resources
+D:\GitHub\Study\数据导出\WinFormExport\WinFormExport\obj\Debug\WinFormExport.csproj.GenerateResource.Cache
+D:\GitHub\Study\数据导出\WinFormExport\WinFormExport\bin\Debug\WinFormExport.exe
+D:\GitHub\Study\数据导出\WinFormExport\WinFormExport\bin\Debug\WinFormExport.pdb
+D:\GitHub\Study\数据导出\WinFormExport\WinFormExport\bin\Debug\Microsoft.Office.Interop.Word.dll
+D:\GitHub\Study\数据导出\WinFormExport\WinFormExport\bin\Debug\office.dll
+D:\GitHub\Study\数据导出\WinFormExport\WinFormExport\bin\Debug\Microsoft.Vbe.Interop.dll
+D:\GitHub\Study\数据导出\WinFormExport\WinFormExport\bin\Debug\stdole.dll
+D:\GitHub\Study\数据导出\WinFormExport\WinFormExport\obj\Debug\WinFormExport.exe
+D:\GitHub\Study\数据导出\WinFormExport\WinFormExport\obj\Debug\WinFormExport.pdb
