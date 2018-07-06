@@ -5,17 +5,18 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.Office.Interop.Word;
 using WinFormExport.Tools;
+using WinFormExport.Model;
 
 namespace WinFormExport
 {
     /// <summary>
     /// dataGridView数据导出到word
     /// 有word模板的情况
-    /// AimeeMeng 2018-06-25本篇文章介绍了根据word模板导出word文档的简要方法。
+    /// AimeeMeng 2018-06-25
     /// </summary>
     public partial class Form1 : Form
     {
@@ -25,14 +26,12 @@ namespace WinFormExport
             InitializeComponent();
         }
 
-        /// <summary> 加载模拟数据
-        /// 加载模拟数据
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void button1_Click(object sender, EventArgs e)
+
+        private void Form1_Load(object sender, EventArgs e)
         {
-            try {
+            //加载模拟数据
+            try
+            {
                 List<griddata> gdList = new List<griddata>();
                 for (int i = 0; i < 10; i++)
                 {
@@ -42,10 +41,13 @@ namespace WinFormExport
                     gdList.Add(gd);
                 }
                 dataGridView1.DataSource = gdList;
-               
+
             }
             catch { MessageBox.Show("出错了。"); }
         }
+    
+
+        #region 根据word模板导出word文档
 
         /// <summary> 导出数据
         /// 导出数据
@@ -162,11 +164,172 @@ namespace WinFormExport
             progressBar1.Visible = false;
             MessageBox.Show("导出成功。");
         }
+
+        #endregion
+
+        #region 导出Excel数据
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //if (dataGridView1.SelectedRows.Count > 0)
+                //{
+                //    if ((MessageBox.Show("确定要导出选中的" + dataGridView1.SelectedRows.Count + "条数据吗﹖", "批量导出", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes))
+                //    {
+                //        //弹出选择文件夹对话框
+                //        FolderBrowserDialog path = new FolderBrowserDialog();
+                //        path.Description = "选择需要保存的文件夹";
+                //        path.ShowDialog();
+                //        SaveFilePath = path.SelectedPath;
+                //    }
+                //}
+                //ExportExcel("", dataGridView1);
+                ExportExcel2("");
+            }
+            catch { MessageBox.Show("导出出错了。"); }
+        }
+
+        /// <summary>
+        /// 将DataGridView数据导出到excel
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="myDGV"></param>
+        private void ExportExcel(string fileName,DataGridView myDGV)
+        {
+            try {
+                string saveFileName = "";
+                SaveFileDialog saveDialog = new SaveFileDialog();
+                saveDialog.DefaultExt = "xls";
+                saveDialog.Filter = "Excel文件|*.xls";
+                saveDialog.FilterIndex = 0;
+                saveDialog.RestoreDirectory = true;
+                saveDialog.CreatePrompt = true;
+                saveDialog.Title = "导出Excel文件到";
+                saveDialog.FileName = fileName;
+                saveDialog.ShowDialog();
+                saveFileName = saveDialog.FileName;
+                if (saveFileName.IndexOf(":") < 0) return; //被点了取消
+                Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
+                if (xlApp == null)
+                {
+                    MessageBox.Show("无法创建Excel对象，可能您的电脑未安装Excel");
+                    return;
+                }
+                Microsoft.Office.Interop.Excel.Workbooks workbooks = xlApp.Workbooks;
+                Microsoft.Office.Interop.Excel.Workbook workbook = workbooks.Add(Microsoft.Office.Interop.Excel.XlWBATemplate.xlWBATWorksheet);
+                Microsoft.Office.Interop.Excel.Worksheet worksheet = (Microsoft.Office.Interop.Excel.Worksheet)workbook.Worksheets[1];//取得sheet1
+                //写入标题
+                for (int i = 0; i < myDGV.ColumnCount; i++)
+                {
+                    worksheet.Cells[1, i + 1] = myDGV.Columns[i].HeaderText;
+                }
+                //写入数值
+                for (int r = 0; r < myDGV.Rows.Count; r++)
+                {
+                    for (int i = 0; i < myDGV.ColumnCount; i++)
+                    {
+                        worksheet.Cells[r + 2, i + 1] = myDGV.Rows[r].Cells[i].Value;
+                    }
+                    System.Windows.Forms.Application.DoEvents();
+                }
+                worksheet.Columns.EntireColumn.AutoFit();//列宽自适应
+                if (saveFileName != "")
+                {
+                    try
+                    {
+                        workbook.Saved = true;
+                        workbook.SaveCopyAs(saveFileName);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("导出文件时出错,文件可能正被打开！\n" + ex.Message);
+                    }
+                }
+                xlApp.Quit();
+                GC.Collect();//强行销毁
+                MessageBox.Show("文件： " + saveFileName + ".xls 保存成功", "信息提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch { }
+        }
+
+        /// <summary>
+        /// 采用流，将数据写入excel
+        /// 会预先创建一个excel文件
+        /// </summary>
+        /// <param name="fileName"></param>
+        private void ExportExcel2(string fileName)
+        {
+            try
+            {
+                string saveFileName = "";
+                SaveFileDialog saveDialog = new SaveFileDialog();
+                saveDialog.DefaultExt = "xls";
+                saveDialog.Filter = "Excel文件|*.xls";
+                saveDialog.FilterIndex = 0;
+                saveDialog.RestoreDirectory = true;
+                saveDialog.CreatePrompt = true;
+                saveDialog.Title = "导出Excel文件到";
+                saveDialog.FileName = fileName;
+                saveDialog.ShowDialog();
+                saveFileName = saveDialog.FileName;
+                if (saveFileName.IndexOf(":") < 0) return; //被点了取消
+                Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
+                if (xlApp == null)
+                {
+                    MessageBox.Show("无法创建Excel对象，可能您的电脑未安装Excel");
+                    return;
+                }
+                Stream myStream;
+                myStream = saveDialog.OpenFile();
+                StreamWriter sw = new StreamWriter(myStream, System.Text.Encoding.GetEncoding("gb2312"));
+                string str = "";
+                try
+                {
+                    //写标题     
+                    for (int i = 0; i < dataGridView1.ColumnCount; i++)
+                    {
+                        if (i > 0)
+                        {
+                            str += "\t";
+                        }
+                        str += dataGridView1.Columns[i].HeaderText;
+                    }
+
+                    sw.WriteLine(str);
+                    //写内容   
+                    for (int j = 0; j < dataGridView1.Rows.Count; j++)
+                    {
+                        string tempStr = "";
+                        for (int k = 0; k < dataGridView1.Columns.Count; k++)
+                        {
+                            if (k > 0)
+                            {
+                                tempStr += "\t";
+                            }
+                            tempStr += dataGridView1.Rows[j].Cells[k].Value.ToString();
+                        }
+                        sw.WriteLine(tempStr);
+                    }
+                    sw.Close();
+                    myStream.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
+                finally
+                {
+                    sw.Close();
+                    myStream.Close();
+                    MessageBox.Show("导出完成");
+                }
+            }
+            catch { }
+        }
+
+        #endregion
     }
 
-    public class griddata
-    {
-        public string id { get; set; }
-        public string name { get; set; }
-    }
+    
 }
