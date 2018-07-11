@@ -1,0 +1,6 @@
+D:\GitHub\Study\算法练习\AlgorithmPractice\AlgorithmPractice\bin\Debug\AlgorithmPractice.exe.config
+D:\GitHub\Study\算法练习\AlgorithmPractice\AlgorithmPractice\obj\Debug\AlgorithmPractice.csprojResolveAssemblyReference.cache
+D:\GitHub\Study\算法练习\AlgorithmPractice\AlgorithmPractice\bin\Debug\AlgorithmPractice.exe
+D:\GitHub\Study\算法练习\AlgorithmPractice\AlgorithmPractice\bin\Debug\AlgorithmPractice.pdb
+D:\GitHub\Study\算法练习\AlgorithmPractice\AlgorithmPractice\obj\Debug\AlgorithmPractice.exe
+D:\GitHub\Study\算法练习\AlgorithmPractice\AlgorithmPractice\obj\Debug\AlgorithmPractice.pdb
