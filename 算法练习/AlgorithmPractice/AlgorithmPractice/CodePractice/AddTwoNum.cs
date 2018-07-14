@@ -32,10 +32,6 @@ namespace AlgorithmPractice.CodePractice
             LinkList<int> L3 = AddTwoNumbers(L1, L2);
             L3.Reverse();
         }
-
-
-
-
         private static LinkList<int> AddTwoNumbers(LinkList<int> l1, LinkList<int> l2)
         {
             int num1 = 0;
@@ -43,7 +39,7 @@ namespace AlgorithmPractice.CodePractice
             int length1 = 0;
             while (p1 != null)
             {
-                num1 += p1.Data * (int)Math.Pow(10, length1); 
+                num1 += p1.Data * (int)Math.Pow(10, length1);
                 p1 = p1.Next;
                 length1++;
             }
@@ -70,19 +66,10 @@ namespace AlgorithmPractice.CodePractice
                 result.Append(_nres);
                 length--;
             }
-            
+
             return result;
         }
     }
-
-    
-  ////Definition for singly-linked list.
-  //public class ListNode {
-  //    public int val;
-  //    public ListNode next;
-  //    public ListNode(int x) { val = x; }
-  //}
-
 
     /// <summary>
     /// 单链表结点类 泛型
@@ -345,4 +332,101 @@ namespace AlgorithmPractice.CodePractice
 
     }
 
+
+    #region 
+    ////Definition for singly-linked list.
+    public class ListNode
+    {
+        public int val;
+        public ListNode next;
+        public ListNode(int x) { val = x; }
+    }
+
+    public class Solution
+    {
+        public static void main()
+        {
+            ListNode L1 = new ListNode(9);
+            ListNode L2 = new ListNode(1);
+            L2.next = new ListNode(9);
+            L2.next.next = new ListNode(9);
+            L2.next.next.next = new ListNode(9);
+            L2.next.next.next.next = new ListNode(9);
+            L2.next.next.next.next.next = new ListNode(9);
+            L2.next.next.next.next.next.next = new ListNode(9);
+            L2.next.next.next.next.next.next.next = new ListNode(9);
+            L2.next.next.next.next.next.next.next.next = new ListNode(9);
+            L2.next.next.next.next.next.next.next.next.next = new ListNode(9);
+            ListNode L3 = AddTwoNumbers(L1, L2);
+            ListNode pln = L3;
+            while (pln!=null)
+            {
+                Console.WriteLine(pln.val);
+                pln = pln.next;
+            }
+        }
+        public static ListNode AddTwoNumbers(ListNode l1, ListNode l2)
+        {
+            int num1 = 0;
+            int length1 = 0;
+            ListNode p1 = l1;
+            while (p1 != null)
+            {
+                num1 += p1.val * (int)Math.Pow(10, length1);
+                p1 = p1.next;
+                length1++;
+            }
+
+            int num2 = 0;
+            int length2 = 0;
+            ListNode p2 = l2;
+            while (p2 != null)
+            {
+                num2 += p2.val * (int)Math.Pow(10, length2);
+                p2 = p2.next;
+                length2++;
+            }
+
+            int num3 = num1 + num2;
+            int length = num3.ToString().Length;
+            int _num3 = num3;
+            return Reverse(GetNext(length, _num3));
+        }
+        public static ListNode GetNext(int length, int _num3)
+        {
+            if (length > 0)
+            {
+                int pow = (int)Math.Pow(10, length - 1);
+                int _nres = _num3 / pow;
+                ListNode _result = new ListNode(_nres);
+                int num3 = _num3 - _nres * pow;
+                length--;
+                _result.next = GetNext(length, num3);
+                return _result;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public static ListNode Reverse(ListNode ln)
+        {
+            ListNode CurrentNode = ln;
+            ListNode NewNode = null;
+
+            while (CurrentNode != null)
+            {
+                ln = CurrentNode.next;
+                CurrentNode.next = NewNode;
+                NewNode = CurrentNode;
+                CurrentNode = ln;
+            }
+
+            return NewNode;
+        }
+
+    }
+
+    #endregion
 }

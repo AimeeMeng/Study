@@ -14,7 +14,8 @@ namespace AlgorithmPractice
             try
             {
                 //TwoSum.main();
-                AddTwoNum.main();
+                //AddTwoNum.main();
+                Solution.main();
                 Console.WriteLine();
                 Console.ReadLine();
             }
